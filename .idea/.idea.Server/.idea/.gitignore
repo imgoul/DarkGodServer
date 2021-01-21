@@ -1,0 +1,11 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/modules.xml
+/projectSettingsUpdater.xml
+/.idea.Server.iml
+# Datasource local storage ignored files
+/../../../../../../../:\Desktop\DarkGodServerAndClient\Server\.idea\.idea.Server\.idea/dataSources/
+/dataSources.local.xml

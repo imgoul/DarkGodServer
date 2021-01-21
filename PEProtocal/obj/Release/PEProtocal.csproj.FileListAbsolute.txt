@@ -1,0 +1,9 @@
+D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\bin\Release\PEProtocal.dll.config
+D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\bin\Release\PEProtocal.dll
+D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\bin\Release\PEProtocal.pdb
+D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\bin\Release\PESocket.dll
+D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\bin\Release\PESocket.pdb
+D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\obj\Release\PEProtocal.csprojAssemblyReference.cache
+D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\obj\Release\PEProtocal.csproj.CopyComplete
+D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\obj\Release\PEProtocal.dll
+D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\obj\Release\PEProtocal.pdb
