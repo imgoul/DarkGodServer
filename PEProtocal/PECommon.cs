@@ -52,5 +52,9 @@ public class PECommon
     {
         return 100*lv*lv;
     }
+
+
+    public const int PowerAddSpace = 5;//分钟
+    public const int PowerAddCount = 2;//分钟
 }
 

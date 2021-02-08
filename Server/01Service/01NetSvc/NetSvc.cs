@@ -66,7 +66,7 @@ public class NetSvc
 
     public void Update()
     {
-        if (msgPackQue.Count > 0)
+        while (msgPackQue.Count > 0)
         {
             PECommon.Log("PackCount:" + msgPackQue.Count);
             lock (obj)
@@ -87,6 +87,19 @@ public class NetSvc
             case CMD.ReqRename:
                 LoginSys.Instance.ReqRename(pack);
                 break;
+            case  CMD.ReqGuide:
+                GuideSys.Instance.ReqGuide(pack);
+                break;
+            case  CMD.ReqStrong:
+                StrongSys.Instance.ReqStrong(pack);
+                break;
+            case CMD.SndChat:
+                ChatSys.Instance.SndChat(pack);
+                break;
+            case CMD.ReqBuy :
+                BuySys.Instance.ReqBuy(pack);
+                break;
+            
         }
     }
 }

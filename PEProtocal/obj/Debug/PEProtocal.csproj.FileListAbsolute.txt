@@ -9,6 +9,9 @@ E:\Desktop\DarkGodServerAndClient\Server\PEProtocal\obj\Debug\PEProtocal.pdb
 E:\Desktop\DarkGodServerAndClient\Client\DarkGod\Assets\Scripts\Net\PEProtocal.dll
 E:\Desktop\DarkGodServerAndClient\Client\DarkGod\Assets\Scripts\Net\PEProtocal.pdb
 E:\Desktop\DarkGodServerAndClient\Server\PEProtocal\obj\Debug\PEProtocal.csprojAssemblyReference.cache
+D:\bin\debug\PEProtocal.dll.config
+D:\bin\debug\PEProtocal.dll
+D:\bin\debug\PEProtocal.pdb
 D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\bin\Debug\PEProtocal.dll.config
 D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\bin\Debug\PEProtocal.dll
 D:\Desktop\DarkGodServerAndClient\Server\PEProtocal\bin\Debug\PEProtocal.pdb

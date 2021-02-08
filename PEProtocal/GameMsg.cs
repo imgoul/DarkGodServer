@@ -18,6 +18,21 @@ namespace PEProtocal
         public RspLogin rspLogin;
         public ReqRename reqRename;
         public RspRename rspRename;
+        public ReqGuide reqGuide;
+        public RspGuide rspGuide;
+
+        public ReqStrong reqStrong;
+        public RspStrong rspStrong;
+
+        public SndChat sndChat;
+        public PshChat pshChat;
+
+        public ReqBuy reqBuy;
+        public RspBuy rspBuy;
+
+        public PshPower pshPower;
+
+        
     }
 
     #region 登录相关
@@ -45,16 +60,22 @@ namespace PEProtocal
         public int power;
         public int coin;
         public int diamond;
+        public int crystal;
+        
 
 
         public int hp;
-        public int ad;//物理攻击
-        public int ap;//魔法攻击
-        public int addef;//物理防御
-        public int apdef;//魔法防御
+        public int ad; //物理攻击
+        public int ap; //魔法攻击
+        public int addef; //物理防御
+        public int apdef; //魔法防御
         public int dodge; //闪避概率
         public int pierce; //穿透比率
         public int critical; //暴击概率
+        public int guideid; //任务引导id
+        public int[] strongArr;//下标：装备位置,0：头盔     内容：星级
+        
+        public long time;//时间：用来计算离线时体力恢复
     }
 
     [Serializable]
@@ -71,6 +92,100 @@ namespace PEProtocal
 
     #endregion
 
+
+    #region 引导相关
+
+    [Serializable]
+    public class ReqGuide
+    {
+        public int guideid;
+    }
+
+    [Serializable]
+    public class RspGuide
+    {
+        public int guideid;
+        public int coin;
+        public int lv;
+        public int exp;
+    }
+
+    
+    
+    
+    #endregion
+
+    #region 强化相关
+
+    [Serializable]
+    public class ReqStrong
+    {
+        public int pos;
+    }
+
+    [Serializable]
+    public class RspStrong
+    {
+        public int coin;
+        public int crystal;
+        public int hp;
+        public int ad;
+        public int ap;
+        public int addef;
+        public int apdef;
+        public int[] strongArr;
+
+    }
+    #endregion
+
+
+
+    #region 聊天相关
+
+    [Serializable]
+    public class SndChat
+    {
+        public string chat;
+    }
+
+    [Serializable]
+    public class PshChat
+    {
+        public string name;
+        public string chat;
+    }
+
+    [Serializable]
+    public class PshPower
+    {
+        public int power;
+    }
+
+    #endregion
+
+
+
+
+    #region 资源交易相关
+
+    [Serializable]
+    public class ReqBuy
+    {
+        public int type;
+        public int cost;
+    }
+
+    [Serializable]
+    public class RspBuy
+    {
+        public int type;
+        public int diamond;
+        public int coin;
+        public int power;
+        
+    }
+
+    #endregion
     public enum ErrorCode
     {
         None = 0,
@@ -78,6 +193,13 @@ namespace PEProtocal
         WrongPass, //密码错误
         NameIsExist, //名字已存在
         UpdateDBError, //更新数据库失败
+        
+        ServerDataError,//服务器数据异常
+        LackLevel,
+        LackCoin,
+        LackCrystal,
+        LackDiamond,
+        
     }
 
     public enum CMD
@@ -90,6 +212,27 @@ namespace PEProtocal
 
         ReqRename = 103,
         RspRename = 104,
+
+
+        //主城相关
+        ReqGuide = 200,
+        RspGuide = 201,
+        
+        ReqStrong=203,
+        RspStrong=204,
+        
+        
+        SndChat=205,
+        PshChat=206,
+        
+        
+        ReqBuy=207,
+        RspBug=208,
+        
+        PshPower=209,
+        
+        
+        
     }
 
     public class SrvCfg

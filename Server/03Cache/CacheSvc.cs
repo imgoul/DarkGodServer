@@ -108,5 +108,25 @@ public class CacheSvc
         PECommon.Log("OffLine Result: SessionId:"+session.SessionID+succ);
     }
 
+
+
+
+
+    public List<ServerSession> GetOnlineServerSessions()
+    {
+        List<ServerSession> list = new List<ServerSession>();
+        foreach (var item in onLineSessionDic)
+        {
+            list.Add(item.Key);
+        }
+
+        return list;
+    }
+
+
+    public Dictionary<ServerSession, PlayerData> GetOnlineCache()
+    {
+        return onLineSessionDic;
+    }
 }
 

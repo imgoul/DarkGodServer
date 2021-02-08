@@ -32,6 +32,8 @@ public class ServerRoot
         //服务层初始化
         NetSvc.Instance.Init();
         CacheSvc.Instance.Init();
+        CfgSvc.Instance.Init();
+        TimerSvc.Instance.Init();
 
 
         //数据层初始化
@@ -39,11 +41,21 @@ public class ServerRoot
 
         //业务系统层初始化
         LoginSys.Instance.Init();
+        GuideSys.Instance.Init();
+        StrongSys.Instance.Init();
+        ChatSys.Instance.Init();
+        BuySys.Instance.Init();
+        PowerSys.Instance.Init();
+        
+        
+        
+
     }
 
     public void Update()
     {
         NetSvc.Instance.Update();
+        TimerSvc.Instance.Update();
     }
 
 

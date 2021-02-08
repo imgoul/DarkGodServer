@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 public class ServerStart
 {
@@ -20,6 +21,7 @@ public class ServerStart
         while (true)
         {
             ServerRoot.Instance.Update();
+            Thread.Sleep(20);
         }
     }
 }
