@@ -32,6 +32,15 @@ namespace PEProtocal
 
         public PshPower pshPower;
 
+        public ReqTakeTaskReward reqTakeTaskReward;
+        public RspTakeTaskReward rspTakeTaskReward;
+
+        public PshTaskPrgs pshTaskPrgs;
+
+
+        public ReqFBFight reqFBFight;
+        public RspFBFight rspFBFight;
+        
         
     }
 
@@ -61,7 +70,6 @@ namespace PEProtocal
         public int coin;
         public int diamond;
         public int crystal;
-        
 
 
         public int hp;
@@ -73,9 +81,12 @@ namespace PEProtocal
         public int pierce; //穿透比率
         public int critical; //暴击概率
         public int guideid; //任务引导id
-        public int[] strongArr;//下标：装备位置,0：头盔     内容：星级
-        
-        public long time;//时间：用来计算离线时体力恢复
+        public int[] strongArr; //下标：装备位置,0：头盔     内容：星级
+
+        public long time; //时间：用来计算离线时体力恢复
+        public string[] taskArr;
+
+        public int fuben;
     }
 
     [Serializable]
@@ -110,9 +121,6 @@ namespace PEProtocal
         public int exp;
     }
 
-    
-    
-    
     #endregion
 
     #region 强化相关
@@ -134,10 +142,9 @@ namespace PEProtocal
         public int addef;
         public int apdef;
         public int[] strongArr;
-
     }
-    #endregion
 
+    #endregion
 
 
     #region 聊天相关
@@ -164,8 +171,6 @@ namespace PEProtocal
     #endregion
 
 
-
-
     #region 资源交易相关
 
     [Serializable]
@@ -182,10 +187,56 @@ namespace PEProtocal
         public int diamond;
         public int coin;
         public int power;
-        
     }
 
     #endregion
+
+
+    #region 任务奖励相关
+
+    [Serializable]
+    public class ReqTakeTaskReward
+    {
+        public int tid;
+    }
+
+    [Serializable]
+    public class RspTakeTaskReward
+    {
+        public int coin;
+        public int lv;
+        public int exp;
+        public string[] taskArr;
+    }
+
+
+    [Serializable]
+    public class PshTaskPrgs
+    {
+        public string[] taskArr;
+    }
+
+    #endregion
+
+
+    #region 副本战斗相关
+
+    [Serializable]
+    public class ReqFBFight
+    {
+        public int fbid;
+    }
+
+
+    [Serializable]
+    public class RspFBFight
+    {
+        public int fbid;
+        public int power;
+    }
+
+    #endregion
+
     public enum ErrorCode
     {
         None = 0,
@@ -193,13 +244,14 @@ namespace PEProtocal
         WrongPass, //密码错误
         NameIsExist, //名字已存在
         UpdateDBError, //更新数据库失败
-        
-        ServerDataError,//服务器数据异常
+        ClientDataError, //客户端数据异常
+
+        ServerDataError, //服务器数据异常
         LackLevel,
         LackCoin,
         LackCrystal,
         LackDiamond,
-        
+        LackPower
     }
 
     public enum CMD
@@ -217,20 +269,27 @@ namespace PEProtocal
         //主城相关
         ReqGuide = 200,
         RspGuide = 201,
+
+        ReqStrong = 203,
+        RspStrong = 204,
+
+
+        SndChat = 205,
+        PshChat = 206,
+
+
+        ReqBuy = 207,
+        RspBug = 208,
+
+        PshPower = 209,
+
+        ReqTakeTaskReward = 210,
+        RspTakeTaskReward = 211,
+
+        PshTaskPrgs = 212,
         
-        ReqStrong=203,
-        RspStrong=204,
-        
-        
-        SndChat=205,
-        PshChat=206,
-        
-        
-        ReqBuy=207,
-        RspBug=208,
-        
-        PshPower=209,
-        
+        ReqFBFight=301,
+        RspFBFight=302,
         
         
     }

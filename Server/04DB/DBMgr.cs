@@ -72,12 +72,13 @@ public class DBMgr
                     guideid = reader.GetInt32("guideid"),
                     crystal = reader.GetInt32("crystal"),
                     time = reader.GetInt64("time"),
+                    fuben = reader.GetInt32("fuben"),
 
 
                     //todo  
                 };
 
-                #region Strong
+                #region StrongArr
 
                 //数据示意：1#2#3#4#5#6#
                 string[] strongStrArr = reader.GetString("strong").Split('#');
@@ -99,6 +100,32 @@ public class DBMgr
                     }
 
                     playerData.strongArr = strongArr;
+                }
+
+                #endregion
+
+                #region TaskArr
+
+                //数据示意：1|1|0#2|1|0
+                string[] taskArr = reader.GetString("task").Split('#');
+                //todo 后期增加任务
+                playerData.taskArr = new string[6];
+                for (int i = 0; i < taskArr.Length; i++)
+                {
+                    if (taskArr[i]=="")
+                    {
+                        continue;
+                        
+                    }
+                    else if (taskArr[i].Length>=5)
+                    {
+                        playerData.taskArr[i] = taskArr[i];
+                    }
+                    else
+                    {
+                        throw new Exception("DataError");
+                    }
+                    
                 }
 
                 #endregion
@@ -139,7 +166,15 @@ public class DBMgr
                     guideid = 1001,
                     strongArr = new int[6],
                     time = TimerSvc.Instance.GetNowTime(),
+                    taskArr = new String[6],
+                    fuben=10001,
                 };
+                
+                //初始化任务奖励数据
+                for (int i = 0; i < playerData.taskArr.Length; i++)
+                {
+                    playerData.taskArr[i] = (i + 1) + "|0|0";
+                }
                 playerData.id = InsertNewAcctData(acct, pass, playerData);
             }
         }
@@ -156,7 +191,7 @@ public class DBMgr
             MySqlCommand cmd = new MySqlCommand(
                 "insert into account set acct=@acct,pass=@pass,name=@name,level=@level,exp=@exp,power=@power," +
                 "coin = @coin,diamond = @diamond,crystal=@crystal,hp = @hp,ad = @ad,ap = @ap,addef = @addef,apdef = @apdef," +
-                "dodge = @dodge, pierce = @pierce, critical = @critical, guideid = @guideid,strong=@strong,time=@time",
+                "dodge = @dodge, pierce = @pierce, critical = @critical, guideid = @guideid,strong=@strong,time=@time,task=@task,fuben=@fuben",
                 connection);
             cmd.Parameters.AddWithValue("acct", acct);
             cmd.Parameters.AddWithValue("pass", pass);
@@ -177,7 +212,7 @@ public class DBMgr
             cmd.Parameters.AddWithValue("pierce", pd.pierce);
             cmd.Parameters.AddWithValue("critical", pd.critical);
             cmd.Parameters.AddWithValue("guideid", pd.guideid);
-            
+
 
             string strongInfo = "";
             for (int i = 0; i < pd.strongArr.Length; i++)
@@ -188,7 +223,18 @@ public class DBMgr
 
             cmd.Parameters.AddWithValue("strong", strongInfo);
             cmd.Parameters.AddWithValue("time", pd.time);
+           
+            
 
+            string taskInfo = "";
+            for (int i = 0; i < pd.taskArr.Length; i++)
+            {
+                taskInfo += pd.taskArr[i];
+                taskInfo += "#";
+            }
+            cmd.Parameters.AddWithValue("task", taskInfo);
+            cmd.Parameters.AddWithValue("fuben", pd.fuben);
+            
             cmd.ExecuteNonQuery();
             id = (int) cmd.LastInsertedId;
         }
@@ -236,7 +282,7 @@ public class DBMgr
             MySqlCommand cmd = new MySqlCommand(
                 "update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond," +
                 "crystal=@crystal,hp=@hp,ad = @ad,ap = @ap,addef = @addef,apdef = @apdef,dodge = @dodge,pierce = @pierce,critical = @critical," +
-                "guideid = @guideid,strong=@strong,time=@time where id = @id", connection);
+                "guideid = @guideid,strong=@strong,time=@time,task=@task,fuben=@fuben where id = @id", connection);
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("name", playerData.name);
             cmd.Parameters.AddWithValue("level", playerData.lv);
@@ -245,7 +291,7 @@ public class DBMgr
             cmd.Parameters.AddWithValue("coin", playerData.coin);
             cmd.Parameters.AddWithValue("diamond", playerData.diamond);
             cmd.Parameters.AddWithValue("crystal", playerData.crystal);
-            
+
             cmd.Parameters.AddWithValue("hp", playerData.hp);
             cmd.Parameters.AddWithValue("ad", playerData.ad);
             cmd.Parameters.AddWithValue("ap", playerData.ap);
@@ -267,6 +313,15 @@ public class DBMgr
             cmd.Parameters.AddWithValue("time", playerData.time);
 
 
+            string taskInfo = "";
+            for (int i = 0; i < playerData.taskArr.Length; i++)
+            {
+                taskInfo += playerData.taskArr[i];
+                taskInfo += "#";
+            }
+            cmd.Parameters.AddWithValue("task", taskInfo);
+            cmd.Parameters.AddWithValue("fuben", playerData.fuben);
+            
             cmd.ExecuteNonQuery();
         }
         catch (Exception e)

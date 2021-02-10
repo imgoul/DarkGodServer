@@ -56,5 +56,37 @@ public class PECommon
 
     public const int PowerAddSpace = 5;//分钟
     public const int PowerAddCount = 2;//分钟
+    
+    
+    
+    
+    /// <summary>
+    /// 计算经验值
+    /// </summary>
+    /// <param name="pd"></param>
+    /// <param name="addExp"></param>
+    public static void CalcExp(PlayerData pd, int addExp)
+    {
+        int curtLv = pd.lv;
+        int curtExp = pd.exp;
+        int addRestExp = addExp;//增加的经验值可能升多级
+        while (true)
+        {
+            int upNeedExp = PECommon.GetExpUpValByLv(curtLv) - curtExp;
+            if (addRestExp>=upNeedExp)
+            {
+                curtLv += 1;
+                curtExp = 0;
+                addRestExp -= upNeedExp;
+            }
+            else
+            {
+                pd.lv = curtLv;
+                pd.exp = curtExp + addRestExp;
+                break;
+            }
+        }
+        
+    }
 }
 

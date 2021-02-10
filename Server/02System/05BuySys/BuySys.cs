@@ -5,85 +5,94 @@
 	日期：2021年2月7日 18:16:26	
 	功能：购买系统
 *****************************************************/
+
 using PENet;
 using PEProtocal;
+
 public class BuySys
 {
-	private static BuySys instance = null;
+    private static BuySys instance = null;
 
-	private CacheSvc cacheSvc = null;
+    private CacheSvc cacheSvc = null;
 
-	public static BuySys Instance
-	{
-		get
-		{
-			if (instance == null)
-			{
-				instance = new BuySys();
-			}
+    public static BuySys Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new BuySys();
+            }
 
-			return instance;
-		}
-	}
+            return instance;
+        }
+    }
 
-	/// <summary>
-	/// 初始化
-	/// </summary>
-	public void Init()
-	{
-		cacheSvc = CacheSvc.Instance;
-		PETool.LogMsg("BuySys Init Done.");
-	}
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    public void Init()
+    {
+        cacheSvc = CacheSvc.Instance;
+        PETool.LogMsg("BuySys Init Done.");
+    }
 
 
-	public void ReqBuy(MsgPack pack)
-	{
-		ReqBuy data = pack.Msg.reqBuy;
-		GameMsg msg = new GameMsg()
-		{
-			cmd = (int)CMD.RspBug
-		};
-		
-		
-		PlayerData pd = cacheSvc.GetPlayerDataBySession(pack.Session);
+    public void ReqBuy(MsgPack pack)
+    {
+        ReqBuy data = pack.Msg.reqBuy;
+        GameMsg msg = new GameMsg()
+        {
+            cmd = (int) CMD.RspBug
+        };
 
-		if (pd.diamond<data.cost)
-		{
-			msg.err = (int) ErrorCode.LackDiamond;
-		}
-		else
-		{
-			pd.diamond -= data.cost;
-			switch (data.type)
-			{
-				case 0:
-					pd.power += 100;
-					break;
-				case 1:
-					pd.coin += 1000;
-					break;
-					
-			}
 
-			if (!cacheSvc.UpdatePlayerData(pd.id,pd))
-			{
-				msg.err = (int) ErrorCode.UpdateDBError;
-			}
-			else
-			{
-				RspBuy rspBuy = new RspBuy()
-				{
-					type = data.type,
-					diamond = pd.diamond,
-					coin = pd.coin,
-					power = pd.power
-				};
-				msg.rspBuy = rspBuy;
-			}
-			
-		}
+        PlayerData pd = cacheSvc.GetPlayerDataBySession(pack.Session);
 
-		pack.Session.SendMsg(msg);
+        if (pd.diamond < data.cost)
+        {
+            msg.err = (int) ErrorCode.LackDiamond;
+        }
+        else
+        {
+            pd.diamond -= data.cost;
+            PshTaskPrgs pshTaskPrgs = null;
+            switch (data.type)
+            {
+                case 0:
 
-	}
+                    pd.power += 100;
+                    //任务进度数据更新
+                    pshTaskPrgs=TaskSys.Instance.GetTaskPrgs(pd, 4);
+                    break;
+                case 1:
+
+                    pd.coin += 1000;
+                    //任务进度数据更新
+                    pshTaskPrgs=TaskSys.Instance.GetTaskPrgs(pd, 5);
+                    break;
+            }
+
+            if (!cacheSvc.UpdatePlayerData(pd.id, pd))
+            {
+                msg.err = (int) ErrorCode.UpdateDBError;
+            }
+            else
+            {
+                RspBuy rspBuy = new RspBuy()
+                {
+                    type = data.type,
+                    diamond = pd.diamond,
+                    coin = pd.coin,
+                    power = pd.power
+                };
+                msg.rspBuy = rspBuy;
+                
+                //并报包处理
+                msg.pshTaskPrgs = pshTaskPrgs;
+            }
+        }
+
+        pack.Session.SendMsg(msg);
+    }
 }

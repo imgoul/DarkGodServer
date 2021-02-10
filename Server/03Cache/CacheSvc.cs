@@ -1,11 +1,11 @@
-﻿
-using PEProtocal;
+﻿using PEProtocal;
 using System.Collections.Generic;
 using PENet;
 
 public class CacheSvc
 {
     private static CacheSvc instance = null;
+
     public static CacheSvc Instance
     {
         get
@@ -14,12 +14,14 @@ public class CacheSvc
             {
                 instance = new CacheSvc();
             }
+
             return instance;
         }
     }
+
     //存储当前上线的用户
-    private Dictionary<string,ServerSession> onLineAcctDic=new Dictionary<string, ServerSession>();
-    private Dictionary<ServerSession,PlayerData> onLineSessionDic=new Dictionary<ServerSession, PlayerData>();
+    private Dictionary<string, ServerSession> onLineAcctDic = new Dictionary<string, ServerSession>();
+    private Dictionary<ServerSession, PlayerData> onLineSessionDic = new Dictionary<ServerSession, PlayerData>();
     private DBMgr dbMgr;
 
     /// <summary>
@@ -27,7 +29,7 @@ public class CacheSvc
     /// </summary>
     public void Init()
     {
-        dbMgr=DBMgr.Instance;
+        dbMgr = DBMgr.Instance;
         PETool.LogMsg("CacheSvc Init Done.");
     }
 
@@ -42,9 +44,9 @@ public class CacheSvc
     /// <param name="acct"></param>
     /// <param name="pass"></param>
     /// <returns>密码错误返回null,账号不存在则默认创建新账号</returns>
-    public PlayerData GetPlayerData(string acct,string pass)
+    public PlayerData GetPlayerData(string acct, string pass)
     {
-        return dbMgr.QueryPlayerData(acct,pass);
+        return dbMgr.QueryPlayerData(acct, pass);
     }
 
     /// <summary>
@@ -53,10 +55,10 @@ public class CacheSvc
     /// <param name="acct"></param>
     /// <param name="session"></param>
     /// <param name="playerData"></param>
-    public void AcctOnline(string acct,ServerSession session,PlayerData playerData)
+    public void AcctOnline(string acct, ServerSession session, PlayerData playerData)
     {
-        onLineAcctDic.Add(acct,session);
-        onLineSessionDic.Add(session,playerData);
+        onLineAcctDic.Add(acct, session);
+        onLineSessionDic.Add(session, playerData);
     }
 
     public bool IsNameExist(string name)
@@ -66,7 +68,7 @@ public class CacheSvc
 
     public PlayerData GetPlayerDataBySession(ServerSession session)
     {
-        if(onLineSessionDic.TryGetValue(session,out PlayerData playerData))
+        if (onLineSessionDic.TryGetValue(session, out PlayerData playerData))
         {
             return playerData;
         }
@@ -82,13 +84,12 @@ public class CacheSvc
     /// <param name="id"></param>
     /// <param name="playerData"></param>
     /// <returns></returns>
-    public bool UpdatePlayerData(int id,PlayerData playerData)
+    public bool UpdatePlayerData(int id, PlayerData playerData)
     {
-        
-       return dbMgr.UpdatePlayerData(id,playerData);
+        return dbMgr.UpdatePlayerData(id, playerData);
     }
 
-    
+
     /// <summary>
     /// 清除缓存中离线玩家数据
     /// </summary>
@@ -97,19 +98,16 @@ public class CacheSvc
     {
         foreach (var item in onLineAcctDic)
         {
-            if(item.Value==session)
+            if (item.Value == session)
             {
                 onLineAcctDic.Remove(item.Key);
                 break;
             }
         }
 
-        bool succ=onLineSessionDic.Remove(session);
-        PECommon.Log("OffLine Result: SessionId:"+session.SessionID+succ);
+        bool succ = onLineSessionDic.Remove(session);
+        PECommon.Log("OffLine Result: SessionId:" + session.SessionID + succ);
     }
-
-
-
 
 
     public List<ServerSession> GetOnlineServerSessions()
@@ -128,5 +126,20 @@ public class CacheSvc
     {
         return onLineSessionDic;
     }
-}
 
+
+    public ServerSession GetOnlineServerSession(int ID)
+    {
+        ServerSession session = null;
+        foreach (var item in onLineSessionDic)
+        {
+            if (item.Value.id == ID)
+            {
+                session = item.Key;
+                break;
+            }
+        }
+
+        return session;
+    }
+}
